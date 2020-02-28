@@ -1,0 +1,714 @@
+Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+This is a 2-part assignment. In the first part, you are asked a series of questions that will help you profile and understand the data just like a data scientist would. For this first part of the assignment, you will be assessed both on the correctness of your findings, as well as the code you used to arrive at your answer. You will be graded on how easy your code is to read, so remember to use proper formatting and comments where necessary.
+
+In the second part of the assignment, you are asked to come up with your own inferences and analysis of the data for a particular research question you want to answer. You will be required to prepare the dataset for the analysis you choose to do. As with the first part, you will be graded, in part, on how easy your code is to read, so use proper formatting and comments to illustrate and communicate your intent as required.
+
+For both parts of this assignment, use this "worksheet." It provides all the questions you are being asked, and your job will be to transfer your answers and SQL coding where indicated into this worksheet so that your peers can review your work. You should be able to use any Text Editor (Windows Notepad, Apple TextEdit, Notepad ++, Sublime Text, etc.) to copy and paste your answers. If you are going to use Word or some other page layout application, just be careful to make sure your answers and code are lined appropriately.
+In this case, you may want to save as a PDF to ensure your formatting remains intact for you reviewer.
+
+
+
+Part 1: Yelp Dataset Profiling and Understanding
+
+1. Profile the data by finding the total number of records for each of the tables below:
+	
+i. Attribute table = 10000
+ii. Business table = 10000
+iii. Category table = 10000
+iv. Checkin table = 10000
+v. elite_years table = 10000 
+vi. friend table = 10000
+vii. hours table = 10000
+viii. photo table = 10000
+ix. review table = 10000
+x. tip table = 10000
+xi. user table = 10000
+	
+
+2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
+
+i. Business = 10000
+ii. Hours = 1562
+iii. Category = 2643
+iv. Attribute = 1115
+v. Review = 10000
+vi. Checkin = 493
+vii. Photo = 10000
+viii. Tip = 3979 business_id
+ix. User = 10000
+x. Friend = 11
+xi. Elite_years = 2780
+
+Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.	
+
+
+3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
+
+	Answer: yes
+	
+	
+	SQL code used to arrive at answer:
+	
+select count(*)
+
+from user
+
+where id or 
+
+name or 
+
+review_count or 
+
+yelping_since or
+
+useful or 
+
+funny or 
+
+cool or 
+
+fans or 
+
+average_stars or
+
+compliment_hot or
+
+compliment_more or
+compliment_profile or 
+
+compliment_cute or
+
+compliment_list or
+
+compliment_note or 
+compliment_plain or
+
+compliment_cool or
+
+compliment_funny or
+
+compliment_writer or
+
+compliment_photos isnull; 
+	
+4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
+
+	i. Table: Review, Column: Stars
+	
+		min:	1	max:	5	avg: 3.7082
+		
+	
+	ii. Table: Business, Column: Stars
+	
+		min:	1.0	max:	5.0	avg: 3.6549
+		
+	
+	iii. Table: Tip, Column: Likes
+	
+		min:	0	max:	2	avg: 0.0144
+		
+	
+	iv. Table: Checkin, Column: Count
+	
+		min:	1	max:	53	avg: 1.9414
+		
+	
+	v. Table: User, Column: Review_count
+	
+		min:	0	max:	2000	avg: 24.2995
+		
+
+
+5. List the cities with the most reviews in descending order:
+
+	SQL code used to arrive at answer:
+	
+select city, sum(review_count) as total
+from business
+group by city
+order by total desc;
+	
+	Copy and Paste the Result Below:
+
++-----------------+-------+
+| city            | total |
++-----------------+-------+
+| Las Vegas       | 82854 |
+| Phoenix         | 34503 |
+| Toronto         | 24113 |
+| Scottsdale      | 20614 |
+| Charlotte       | 12523 |
+| Henderson       | 10871 |
+| Tempe           | 10504 |
+| Pittsburgh      |  9798 |
+| Montréal        |  9448 |
+| Chandler        |  8112 |
+| Mesa            |  6875 |
+| Gilbert         |  6380 |
+| Cleveland       |  5593 |
+| Madison         |  5265 |
+| Glendale        |  4406 |
+| Mississauga     |  3814 |
+| Edinburgh       |  2792 |
+| Peoria          |  2624 |
+| North Las Vegas |  2438 |
+| Markham         |  2352 |
+| Champaign       |  2029 |
+| Stuttgart       |  1849 |
+| Surprise        |  1520 |
+| Lakewood        |  1465 |
+| Goodyear        |  1155 |
++-----------------+-------+
+(Output limit exceeded, 25 of 362 total rows shown)	
+
+	
+6. Find the distribution of star ratings to the business in the following cities:
+
+i. Avon
+
+SQL code used to arrive at answer:
+
+select stars, count(distinct id) as count
+from business
+where city like 'Avon'
+group by stars
+order by stars desc;
+
+Copy and Paste the Resulting Table Below (2 columns – star rating and count):
+
++-------+-------+
+| stars | count |
++-------+-------+
+|   5.0 |     1 |
+|   4.5 |     1 |
+|   4.0 |     2 |
+|   3.5 |     3 |
+|   2.5 |     2 |
+|   1.5 |     1 |
++-------+-------+
+
+ii. Beachwood
+
+SQL code used to arrive at answer:
+
+select stars, count(distinct id) as count
+from business
+where city like 'Beachwood'
+group by stars
+order by stars desc;
+
+Copy and Paste the Resulting Table Below (2 columns – star rating and count):
+
++-------+-------+
+| stars | count |
++-------+-------+
+|   5.0 |     5 |
+|   4.5 |     2 |
+|   4.0 |     1 |
+|   3.5 |     2 |
+|   3.0 |     2 |
+|   2.5 |     1 |
+|   2.0 |     1 |
++-------+-------+		
+
+7. Find the top 3 users based on their total number of reviews:
+		
+	SQL code used to arrive at answer:
+	
+select id, name, sum(review_count) as ReviewCount
+from user
+group by id
+order by ReviewCount desc;
+		
+	Copy and Paste the Result Below:
+		
++------------------------+-----------+-------------+
+| id                     | name      | ReviewCount |
++------------------------+-----------+-------------+
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald    |        2000 |
+| -3s52C4zL_DHRK0ULG6qtg | Sara      |        1629 |
+| -8lbUNlXVSoXqaRRiHiSNg | Yuri      |        1339 |
+
+
+8. Does posing more reviews correlate with more fans?
+
+	Please explain your findings and interpretation of the results:
+
+No, it doesn't. I added (sum) all the reviews (ReviewCount) and  all the fans (Fans) for each user (id) from the user table, and there is no correlation.
+Someone with a lot of reviews can have a little amount of fans and someone with a lot of fans can have little reviews.
+
+select id, name, sum(review_count) as ReviewCount, sum(fans) as Fans
+from user
+group by id
+order by ReviewCount desc;
+
++------------------------+-----------+-------------+------+
+| id                     | name      | ReviewCount | Fans |
++------------------------+-----------+-------------+------+
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald    |        2000 |  253 |
+| -3s52C4zL_DHRK0ULG6qtg | Sara      |        1629 |   50 |
+| -8lbUNlXVSoXqaRRiHiSNg | Yuri      |        1339 |   76 |
+| -K2Tcgh2EKX6e6HqqIrBIQ | .Hon      |        1246 |  101 |
+| -FZBTkAZEXoP7CYvRV2ZwQ | William   |        1215 |  126 |
+| --2vR0DIsmQ6WfcSzKWigw | Harald    |        1153 |  311 |
+| -gokwePdbXjfS0iF7NsUGA | eric      |        1116 |   16 |
+| -DFCC64NXgqrxlO8aLU5rg | Roanna    |        1039 |  104 |
+| -8EnCioUmDygAbsYZmTeRQ | Mimi      |         968 |  497 |
+| -0IiMAZI2SsQ7VmyzJjokQ | Christine |         930 |  173 |
+
+	
+9. Are there more reviews with the word "love" or with the word "hate" in them?
+
+	Answer:
+There are more reviews with the word "love" (1780) than with "hate" (232).
+
++-------+-------+
+| Loves | Hates |
++-------+-------+
+|  1780 |   232 |
++-------+-------+
+	
+	SQL code used to arrive at answer:
+
+select (select count(distinct text)
+from review
+where text like '%Love%') as Loves,
+(select count(distinct text)
+from review
+where text like '%hate%') as Hates
+	
+10. Find the top 10 users with the most fans:
+
+	SQL code used to arrive at answer:
+
+select id, name, sum(fans) as FansSum
+from user
+group by id
+order by FansSum desc
+limit 10;
+	
+	Copy and Paste the Result Below:
+
++------------------------+-----------+---------+
+| id                     | name      | FansSum |
++------------------------+-----------+---------+
+| -9I98YbNQnLdAmcYfb324Q | Amy       |     503 |
+| -8EnCioUmDygAbsYZmTeRQ | Mimi      |     497 |
+| --2vR0DIsmQ6WfcSzKWigw | Harald    |     311 |
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald    |     253 |
+| -0IiMAZI2SsQ7VmyzJjokQ | Christine |     173 |
+| -g3XIcCb2b-BD0QBCcq2Sw | Lisa      |     159 |
+| -9bbDysuiWeo2VShFJJtcw | Cat       |     133 |
+| -FZBTkAZEXoP7CYvRV2ZwQ | William   |     126 |
+| -9da1xk7zgnnfO1uTVYGkA | Fran      |     124 |
+| -lh59ko3dxChBSZ9U7LfUw | Lissa     |     120 |
++------------------------+-----------+---------+
+	
+	
+11. Is there a strong relationship (or correlation) between having a high number of fans and being listed as "useful" or "funny?" Out of the top 10 users with the highest number of fans, what percent are also listed as “useful” or “funny”?
+
+Key:
+0% - 25% - Low relationship
+26% - 75% - Medium relationship
+76% - 100% - Strong relationship
+	
+	SQL code used to arrive at answer:
+
+select id, name, sum(fans) as FansSum, sum(useful) as UsefulSum, sum(funny) as FunnySum
+from user
+group by id
+order by FansSum desc
+limit 10;	
+	
+	Copy and Paste the Result Below:
+
++------------------------+-----------+---------+-----------+----------+
+| id                     | name      | FansSum | UsefulSum | FunnySum |
++------------------------+-----------+---------+-----------+----------+
+| -9I98YbNQnLdAmcYfb324Q | Amy       |     503 |      3226 |     2554 |
+| -8EnCioUmDygAbsYZmTeRQ | Mimi      |     497 |       257 |      138 |
+| --2vR0DIsmQ6WfcSzKWigw | Harald    |     311 |    122921 |   122419 |
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald    |     253 |     17524 |     2324 |
+| -0IiMAZI2SsQ7VmyzJjokQ | Christine |     173 |      4834 |     6646 |
+| -g3XIcCb2b-BD0QBCcq2Sw | Lisa      |     159 |        48 |       13 |
+| -9bbDysuiWeo2VShFJJtcw | Cat       |     133 |      1062 |      672 |
+| -FZBTkAZEXoP7CYvRV2ZwQ | William   |     126 |      9363 |     9361 |
+| -9da1xk7zgnnfO1uTVYGkA | Fran      |     124 |      9851 |     7606 |
+| -lh59ko3dxChBSZ9U7LfUw | Lissa     |     120 |       455 |      150 |
++------------------------+-----------+---------+-----------+----------+	
+	
+	Please explain your findings and interpretation of the results:
+	
+From the data I should say that there is a Medium relationship (or correlation) between having a high number of fans and being listed as "useful" or "funny".
+From the data, aproximately 60%-70% out of the top 10 users with the highest number of fans, I'll consider to have been pointed out as “useful” or “funny” enough.
+	
+Part 2: Inferences and Analysis
+
+1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. Include your code.
+
+I choosed Toronto as city and Restaurants as business:
+
+select c.category, b.city, b.state, b.stars, count (distinct b.id)
+
+from business b, category c 
+
+where b.id = c.business_id and city like '%Toronto%' and category like '%restaurant%'
+
+group by stars
+
+order by stars desc;
+
++-------------+---------+-------+-------+-----------------------+
+| category    | city    | state | stars | count (distinct b.id) |
++-------------+---------+-------+-------+-----------------------+
+| Restaurants | Toronto | ON    |   4.5 |                     2 |
+| Restaurants | Toronto | ON    |   4.0 |                     3 |
+| Restaurants | Toronto | ON    |   3.5 |                     1 |
+| Restaurants | Toronto | ON    |   3.0 |                     2 |
+| Restaurants | Toronto | ON    |   2.0 |                     1 |
+| Restaurants | Toronto | ON    |   1.5 |                     1 |
++-------------+---------+-------+-------+-----------------------+
+
+The groups are 2-3 stars and 4-5 stars (I left out the 3.5 stars), having as result 3 restaurants in the 2-3 stars group and 5 restaurants in the 4-5 group.
+	
+i. Do the two groups you chose to analyze have a different distribution of hours?
+
+They do have, and there is nothing conclusive about the hours distribution. The 4-5 stars in average open later than the 2-3 stars, but in average both groups close late at night during weekdays. 
+
+select h.business_id, h.hours
+
+from hours h
+
+where h.business_id in (select b.id
+
+			from business b, category c
+
+			where b.id = c.business_id 
+			and city like '%Toronto%' 
+			and category like '%restaurant%' 
+			and stars >=2 and stars <=3)
+
++------------------------+-----------------------+
+| business_id            | hours                 |
++------------------------+-----------------------+
+| 0B3W6KxkD3o4W4l6cq735w | Monday|10:30-21:00    |
+| 0B3W6KxkD3o4W4l6cq735w | Tuesday|10:30-21:00   |
+| 0B3W6KxkD3o4W4l6cq735w | Friday|10:30-21:00    |
+| 0B3W6KxkD3o4W4l6cq735w | Wednesday|10:30-21:00 |
+| 0B3W6KxkD3o4W4l6cq735w | Thursday|10:30-21:00  |
+| 0B3W6KxkD3o4W4l6cq735w | Sunday|11:00-19:00    |
+| 0B3W6KxkD3o4W4l6cq735w | Saturday|10:30-21:00  |
+| 1NyHpXJqSLHnvDCOW0nJDg | Monday|9:00-23:00     |
+| 1NyHpXJqSLHnvDCOW0nJDg | Tuesday|9:00-23:00    |
+| 1NyHpXJqSLHnvDCOW0nJDg | Friday|9:00-4:00      |
+| 1NyHpXJqSLHnvDCOW0nJDg | Wednesday|9:00-23:00  |
+| 1NyHpXJqSLHnvDCOW0nJDg | Thursday|9:00-23:00   |
+| 1NyHpXJqSLHnvDCOW0nJDg | Sunday|10:00-23:00    |
+| 1NyHpXJqSLHnvDCOW0nJDg | Saturday|10:00-4:00   |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Monday|11:00-23:00    |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Tuesday|11:00-23:00   |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Friday|11:00-23:00    |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Wednesday|11:00-23:00 |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Thursday|11:00-23:00  |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Sunday|11:00-23:00    |
+| 1nTMWMa6v-eBKkPYA3gxkQ | Saturday|11:00-23:00  |
++------------------------+-----------------------+
+
+select h.business_id, h.hours
+
+from hours h
+
+where h.business_id in (select b.id
+
+			from business b, category c
+			
+where b.id = c.business_id 
+			and city like '%Toronto%' 
+			and category like '%restaurant%' 
+			and stars >=4 and stars <=5)
+
++------------------------+-----------------------+
+| business_id            | hours                 |
++------------------------+-----------------------+
+| -n27mJ_jQWGCuIukTvg9Mg | Monday|16:00-2:00     |
+| -n27mJ_jQWGCuIukTvg9Mg | Tuesday|18:00-2:00    |
+| -n27mJ_jQWGCuIukTvg9Mg | Friday|18:00-2:00     |
+| -n27mJ_jQWGCuIukTvg9Mg | Wednesday|18:00-2:00  |
+| -n27mJ_jQWGCuIukTvg9Mg | Thursday|18:00-2:00   |
+| -n27mJ_jQWGCuIukTvg9Mg | Sunday|16:00-2:00     |
+| -n27mJ_jQWGCuIukTvg9Mg | Saturday|16:00-2:00   |
+| 0e-j5VcEn54EZT-FKCUZdw | Monday|11:00-23:00    |
+| 0e-j5VcEn54EZT-FKCUZdw | Tuesday|11:00-23:00   |
+| 0e-j5VcEn54EZT-FKCUZdw | Friday|11:00-23:00    |
+| 0e-j5VcEn54EZT-FKCUZdw | Wednesday|11:00-23:00 |
+| 0e-j5VcEn54EZT-FKCUZdw | Thursday|11:00-23:00  |
+| 0e-j5VcEn54EZT-FKCUZdw | Sunday|14:00-23:00    |
+| 0e-j5VcEn54EZT-FKCUZdw | Saturday|11:00-23:00  |
+| 37kk0IW6jL7ZlxZF6k2QBg | Sunday|12:00-16:00    |
+| 37kk0IW6jL7ZlxZF6k2QBg | Friday|18:00-23:00    |
+| 37kk0IW6jL7ZlxZF6k2QBg | Wednesday|18:00-23:00 |
+| 37kk0IW6jL7ZlxZF6k2QBg | Thursday|18:00-23:00  |
+| 37kk0IW6jL7ZlxZF6k2QBg | Saturday|18:00-23:00  |
++------------------------+-----------------------+
+
+ii. Do the two groups you chose to analyze have a different number of reviews?
+
+They do have. The average of review_count of the 4-5 group is higher (41.2) than the 2-3 group (28.67). 
+We could say that the hihger number of reviews could be related to the higher stars value.
+To try to prove this I ran the query for calculating the average of review_count for each stars (whole range from 1 to 5).
+It can be seen that what looked as a correlation grouping the review_count in the 2-3 and 4-5 groups could be an illusion.
+A small set of 10 records is not enough for a conclusive decision.
+
+select id, name, stars, review_count
+
+from business
+
+where id in (	select b.id
+			
+		from business b, category c
+      
+		where b.id = c.business_id 
+			
+		and city like '%Toronto%' 
+			
+		and category like '%restaurant%' 
+			
+		and stars >=2 and stars <=3)
+order by stars desc;
+
++------------------------+------------------+-------+--------------+
+| id                     | name             | stars | review_count |
++------------------------+------------------+-------+--------------+
+| 0B3W6KxkD3o4W4l6cq735w | Big Smoke Burger |   3.0 |           47 |
+| 1NyHpXJqSLHnvDCOW0nJDg | Pizzaiolo        |   3.0 |           34 |
+| 1nTMWMa6v-eBKkPYA3gxkQ | 99 Cent Sushi    |   2.0 |            5 |
++------------------------+------------------+-------+--------------+
+
+select id, name, stars, review_count
+
+from business
+
+where id in (	select b.id
+ 
+		from business b, category c
+
+		where b.id = c.business_id 
+			
+		and city like '%Toronto%' 
+			
+		and category like '%restaurant%' 
+			
+		and stars >=4 and stars <=5)
+order by stars desc;
+
++------------------------+-------------+-------+--------------+
+| id                     | name        | stars | review_count |
++------------------------+-------------+-------+--------------+
+| -n27mJ_jQWGCuIukTvg9Mg | Cabin Fever |   4.5 |           26 |
+| 0e-j5VcEn54EZT-FKCUZdw | Sushi Osaka |   4.5 |            8 |
+| -HVFJ-fD12z1evEExDPZ_A | Mama Mia    |   4.0 |            8 |
+| 2lo7N8RZOCS0DDxO6LPQhw | Naniwa-Taro |   4.0 |           75 |
+| 37kk0IW6jL7ZlxZF6k2QBg | Edulis      |   4.0 |           89 |
++------------------------+-------------+-------+--------------+
+
+select stars, avg(review_count) as AvgRev, count(distinct id) as NumberOfRest
+from business
+
+where id in (	select b.id
+			
+		from business b, category c
+      
+		where b.id = c.business_id 
+			
+		and city like '%Toronto%' 
+			
+		and category like '%restaurant%')
+
+		group by stars
+		
+order by stars desc;         
+
++-------+---------------+-------------+
+| stars |        AvgRev | NumbOfRests |
++-------+---------------+-------------+
+|   4.5 |          17.0 |           2 |
+|   4.0 | 57.3333333333 |           3 |
+|   3.5 |           3.0 |           1 |
+|   3.0 |          40.5 |           2 |
+|   2.0 |           5.0 |           1 |
+|   1.5 |           4.0 |           1 |
++-------+---------------+-------------+       
+
+iii. Are you able to infer anything from the location data provided between these two groups? Explain.
+
+Is so curious.
+With this dataset of 8 restaurants (3 of the Group 2-3 stars and 5 of the Group 4-5 stars),
+the far to the west is the restaurant (lowest longitude) the higher is the stars number.
+This doesn't look like a rule if we use the whole set of 10 restaurants in Toronto.
+
++------------------------+------------------+-------+--------------+----------+-----------+
+| id                     | name             | stars | review_count | latitude | longitude |
++------------------------+------------------+-------+--------------+----------+-----------+
+| 1nTMWMa6v-eBKkPYA3gxkQ | 99 Cent Sushi    |   2.0 |            5 |  43.6614 |   -79.379 |
+| 0B3W6KxkD3o4W4l6cq735w | Big Smoke Burger |   3.0 |           47 |  43.6546 |  -79.3805 |
+| 1NyHpXJqSLHnvDCOW0nJDg | Pizzaiolo        |   3.0 |           34 |  43.6479 |  -79.3901 |
++------------------------+------------------+-------+--------------+----------+-----------+
+
++------------------------+-------------+-------+--------------+----------+-----------+
+| id                     | name        | stars | review_count | latitude | longitude |
++------------------------+-------------+-------+--------------+----------+-----------+
+| 37kk0IW6jL7ZlxZF6k2QBg | Edulis      |   4.0 |           89 |  43.6419 |  -79.4066 |
+| 2lo7N8RZOCS0DDxO6LPQhw | Naniwa-Taro |   4.0 |           75 |  43.7766 |  -79.4142 |
+| -HVFJ-fD12z1evEExDPZ_A | Mama Mia    |   4.0 |            8 |  43.6809 |  -79.4302 |
+| -n27mJ_jQWGCuIukTvg9Mg | Cabin Fever |   4.5 |           26 |  43.6553 |  -79.4567 |
+| 0e-j5VcEn54EZT-FKCUZdw | Sushi Osaka |   4.5 |            8 |  43.6452 |  -79.5324 |
++------------------------+-------------+-------+--------------+----------+-----------+
+
+SQL code used for analysis:
+
+select id, name, stars, review_count, latitude, longitude
+
+from business
+
+where id in (	select b.id
+
+		from business b, category c
+
+		where b.id = c.business_id
+ 
+		and city like '%Toronto%'
+ 
+		and category like '%restaurant%'
+ 
+		and stars >=2 and stars <=3)
+
+select id, name, stars, review_count, latitude, longitude
+
+from business
+
+where id in (	select b.id
+
+		from business b, category c
+
+		where b.id = c.business_id
+ 
+		and city like '%Toronto%'
+ 
+		and category like '%restaurant%'
+ 
+		and stars >=4 and stars <=5)
+
+		
+2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer.
+		
+i. Difference 1:
+
++---------------+---------------+
+|    OpenAvgRev |  ClosedAvgRev |
++---------------+---------------+
+| 31.7570754717 | 23.1980263158 |
++---------------+---------------+
+
+The open businesses have higher average of reviews than the closed ones, 37% more. I would say is obvious that the open ones have been accumulating reviews while the closed ones stopped receiving any review.
+        
+ii. Difference 2:
+
++---------------+---------------+
+|    OpenAvgStr |  ClosedAvgStr |
++---------------+---------------+
+| 3.67900943396 | 3.52039473684 |
++---------------+---------------+
+
+The open businesses have a higher average stars than the closed ones, but I wouldn't say that is determinant (less than 5% difference).
+         
+SQL code used for analysis:
+
+select 
+
+(select avg(review_count)
+from business
+where is_open = 1) as OpenAvgRev, 
+
+(select avg(review_count)
+from business
+where is_open = 0) as ClosedAvgRev;
+
+select 
+
+(select avg(stars)
+from business
+where is_open = 1) as OpenAvgStr, 
+
+(select avg(stars)
+from business
+where is_open = 0) as ClosedAvgStr;
+
+
+3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
+
+Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. Provide answers, in-line, to all of the following:
+	
+i. Indicate the type of analysis you chose to do:
+
+I'll perform a Descriptivee Analysis of the data of the Subway restaurants in the Yelp database. 
+         
+ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
+
+I'll look for a relationship between the number of restaurants by city/state and the number of reviews (Review_Count) and Stars.
+After doing a profiling there are 46 Subway restaurants in the Business database, but not all of them are present in the other tables. 
+In the review table there are not reviews of any Subway restaurant. 
+In the hours table there is just the one at Charlotte, NC. In 
+In the category table there are just two, one at Charlote, NC and other at Murrysville, PA.
+Similar things happened with other business, so in orther to have enough data to do an analysis I decided to use the information on the Business table.
+                      
+iii. Output of your finished dataset:
+
++--------+-------+---------+---------------+----------------+---------------+
+| name   | state | NumRest |        AvgRev |      DifAvgRev |         AvgSt |
++--------+-------+---------+---------------+----------------+---------------+
+| Subway | AZ    |      13 | 7.76923076923 |  1.66053511706 | 3.15384615385 |
+| Subway | NV    |      10 |           8.7 |  2.59130434783 |          3.25 |
+| Subway | NC    |       5 |           4.0 | -2.10869565217 |           2.9 |
+| Subway | OH    |       5 |           4.6 | -1.50869565217 |           3.0 |
+| Subway | IL    |       4 |          4.25 | -1.85869565217 |          2.25 |
+| Subway | ON    |       4 |          3.75 | -2.35869565217 |         2.625 |
+| Subway | PA    |       3 |           3.0 | -3.10869565217 |           3.5 |
+| Subway | WI    |       2 |           4.5 | -1.60869565217 |          2.25 |
++--------+-------+---------+---------------+----------------+---------------+       
+
+For the analysis, the word restaurant refers only to Subway restaurant.         
+From the dataset it can be seen that half of the restaurants are located in just 2 states (AZ and NV).
+This two states has the 2 highest average Reviews (total of reviews of all the restaurants in the state divided by the number of restaurants on that state).
+This two states has an average of number of reviews higher than the general (overall) average of the whole 46 restaurants that is 6.11.
+We could also say that there is a relation between the numbers of restaurants in a state and the amount of reviews.
+The restaurants in the states with more restaurants (AZ and NV) receive more reviews per restaurant than the other restaurants (from the states with less restaurants).
+Also,  we could say there is a strong relationship between the number of restaurants per state and the average of Stars of the restaurants of the same state.
+Except the case of PA, we could see that we could expect higher Stars as higher is the number of restaurants.
+From the dataset if there are 5 or more restaurants the number of stars is close to 3 or higher.
+
+iv. Provide the SQL code you used to create your final dataset:
+
+select b.name, 
+
+b.state, 
+
+count(distinct b.id) as NumRest, 
+
+avg(b.review_count) as AvgRev, 
+
+avg(b.review_count)-(select avg(review_count) 
+  
+	from business
+  where name = 'Subway') 
+  as DifAvgRev, 
+
+avg(b.stars) as AvgSt
+
+from business b
+
+where b.name = 'Subway'
+
+group by b.state
+
+order by NumRest desc;
